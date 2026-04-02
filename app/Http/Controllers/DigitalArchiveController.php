@@ -1,5 +1,10 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\Tarian;
+
 class DigitalArchiveController extends Controller {
-    public function index() { return view('pages.digital-archive'); }
+    public function index() {
+        $tarian = Tarian::where('aktif', true)->orderBy('urutan')->get();
+        return view('pages.digital-archive', compact('tarian'));
+    }
 }

@@ -1,24 +1,23 @@
 <?php
-
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use App\Models\SanggarProfile;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        // Share $siteProfil ke semua view — navbar, footer, title bisa pakai
+        View::composer('*', function ($view) {
+            try {
+                $view->with('siteProfil', SanggarProfile::getInstance());
+            } catch (\Exception $e) {
+                // tabel belum ada (sebelum migrate), abaikan
+            }
+        });
     }
 }

@@ -1,0 +1,26 @@
+<?php
+namespace App\Models;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class Event extends Model {
+    use HasFactory;
+    protected $table = 'events';
+    protected $fillable = [
+        'nama','lokasi','tanggal','kategori','level','hasil',
+        'deskripsi','foto','penghargaan','jumlah_penonton','unggulan','status',
+    ];
+    protected $casts = [
+        'tanggal'     => 'date',
+        'penghargaan' => 'array',
+        'unggulan'    => 'boolean',
+    ];
+
+    public function scopeSelesai($q)    { return $q->where('status','selesai')->orderByDesc('tanggal'); }
+    public function scopeMendatang($q)  { return $q->where('status','akan_datang')->orderBy('tanggal'); }
+    public function scopeUnggulan($q)   { return $q->where('unggulan', true); }
+
+    public function getTahunAttribute(): string { return $this->tanggal->format('Y'); }
+    public function getBulanAttribute(): string { return $this->tanggal->isoFormat('MMM'); }
+    public function getTglAttribute(): string   { return $this->tanggal->format('d'); }
+}

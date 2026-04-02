@@ -1,19 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
+use App\Models\{SanggarProfile, Galeri};
 
-use Illuminate\Http\Request;
-
-class HomeController extends Controller
-{
-    public function index()
-    {
-        $stats = [
-            ['number' => '200+', 'label' => 'Anggota Aktif'],
-            ['number' => '49+',  'label' => 'Penghargaan'],
-            ['number' => '100+', 'label' => 'Menghadiri Event'],
-        ];
- 
-        return view('pages.home', compact('stats'));
+class HomeController extends Controller {
+    public function index() {
+        $profil = SanggarProfile::getInstance();
+        // Ambil SEMUA galeri aktif, dikelompokkan di blade pakai ->where()
+        $galeri = Galeri::aktif()->get();
+        return view('pages.home', compact('profil', 'galeri'));
     }
 }
