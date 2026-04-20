@@ -16,4 +16,17 @@ class Tarian extends Model {
     ];
     public function scopeAktif($q)   { return $q->where('aktif', true)->orderBy('urutan'); }
     public function scopeUnggulan($q){ return $q->where('unggulan', true); }
+
+public function jadwalLatihan()
+{
+    return $this->belongsTo(JadwalLatihan::class, 'jadwal_id');
+}
+public function pendaftaran()
+{
+    return $this->hasMany(\App\Models\PendaftaranTari::class);
+}
+public function kehadiran()
+{
+    return $this->hasMany(\App\Models\Kehadiran::class);
+}
 }

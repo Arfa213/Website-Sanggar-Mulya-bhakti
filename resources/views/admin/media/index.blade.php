@@ -88,7 +88,7 @@
                     title="Hapus">✕</button>
                 <span class="chip chip--{{ $item->aktif ? 'green' : 'gray' }}" style="font-size:.65rem">{{ $item->aktif ? 'Tampil' : 'Sembuyi' }}</span>
             </div>
-            <form id="del-{{ $item->id }}" method="POST" action="{{ route('admin.galeri.destroy',$item) }}" style="display:none">
+            <form id="del-{{ $item->id }}" method="POST" action="{{ route('admin.galeri.destroy',$item->id) }}" style="display:none">
                 @csrf @method('DELETE')
             </form>
         </div>

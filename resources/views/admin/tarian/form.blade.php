@@ -10,7 +10,7 @@
 </div>
 
 <form method="POST"
-      action="{{ $mode==='create' ? route('admin.tarian.store') : route('admin.tarian.update',$tarian) }}"
+      action="{{ $mode==='create' ? route('admin.tarian.store') : route('admin.tarian.update',$tarian->id) }}"
       enctype="multipart/form-data">
 @csrf
 @if($mode==='edit') @method('PUT') @endif

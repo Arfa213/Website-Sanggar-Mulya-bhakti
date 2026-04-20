@@ -16,7 +16,9 @@ class EventController extends Controller
 
     public function create()
     {
-        return view('admin.event.form', ['event' => new Event, 'mode' => 'create']);
+        $event = new Event;
+        $mode  = 'create';
+        return view('admin.event.form', compact('event', 'mode'));
     }
 
     public function store(Request $request)
@@ -28,42 +30,45 @@ class EventController extends Controller
         return redirect()->route('admin.event.index')->with('success', 'Event berhasil ditambahkan!');
     }
 
-    public function edit(Event $event)
+    public function edit($id)
     {
-        return view('admin.event.form', compact('event') + ['mode' => 'edit']);
+        $event = Event::findOrFail($id);
+        $mode  = 'edit';
+        return view('admin.event.form', compact('event', 'mode'));
     }
 
-    public function update(Request $request, Event $event)
+    public function update(Request $request, $id)
     {
-        $data = $this->validateEvent($request);
-        $data = $this->handleFoto($request, $data, $event);
+        $event = Event::findOrFail($id);
+        $data  = $this->validateEvent($request);
+        $data  = $this->handleFoto($request, $data, $event);
         $data['penghargaan'] = $this->parsePenghargaan($request);
         $event->update($data);
         return redirect()->route('admin.event.index')->with('success', 'Event berhasil diperbarui!');
     }
 
-    public function destroy(Event $event)
+    public function destroy($id)
     {
+        $event = Event::findOrFail($id);
         if ($event->foto) Storage::disk('public')->delete($event->foto);
         $event->delete();
         return redirect()->route('admin.event.index')->with('success', 'Event berhasil dihapus.');
     }
 
-    /* ── HELPERS ── */
     private function validateEvent(Request $request): array
     {
         return $request->validate([
-            'nama'             => 'required|string|max:255',
-            'lokasi'           => 'required|string|max:255',
-            'tanggal'          => 'required|date',
-            'kategori'         => 'required|in:internasional,nasional,festival,pentas,kompetisi',
-            'level'            => 'required|in:Internasional,Nasional,Lokal',
-            'hasil'            => 'nullable|string|max:255',
-            'deskripsi'        => 'nullable|string',
-            'jumlah_penonton'  => 'nullable|integer',
-            'unggulan'         => 'boolean',
-            'status'           => 'required|in:akan_datang,selesai',
-            'foto'             => 'nullable|image|max:3072',
+            'nama'            => 'required|string|max:255',
+            'lokasi'          => 'required|string|max:255',
+            'tanggal'         => 'required|date',
+            'kategori'        => 'required|in:internasional,nasional,festival,pentas,kompetisi',
+            'level'           => 'required|in:Internasional,Nasional,Lokal',
+            'hasil'           => 'nullable|string|max:255',
+            'deskripsi'       => 'nullable|string',
+            'jumlah_penonton' => 'nullable|integer',
+            'unggulan'        => 'nullable|boolean',
+            'status'          => 'required|in:akan_datang,selesai',
+            'foto'            => 'nullable|image|max:3072',
         ]);
     }
 

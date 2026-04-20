@@ -34,8 +34,8 @@
                     <td><span class="chip {{ $t->unggulan ? 'chip--orange' : 'chip--gray' }}">{{ $t->unggulan ? '★ Ya' : 'Tidak' }}</span></td>
                     <td><span class="chip {{ $t->aktif ? 'chip--green' : 'chip--gray' }}">{{ $t->aktif ? 'Tampil' : 'Tersembunyi' }}</span></td>
                     <td class="td-actions">
-                        <a href="{{ route('admin.tarian.edit',$t) }}" class="btn btn-secondary btn-sm">Edit</a>
-                        <form method="POST" action="{{ route('admin.tarian.destroy',$t) }}" style="display:inline">
+                        <a href="{{ route('admin.tarian.edit',$t->id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                        <form method="POST" action="{{ route('admin.tarian.destroy',$t->id) }}" style="display:inline">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" data-confirm="Hapus tarian '{{ $t->nama }}'?">Hapus</button>
                         </form>

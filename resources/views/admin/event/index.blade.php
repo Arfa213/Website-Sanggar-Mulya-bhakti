@@ -48,8 +48,8 @@
                     <td><span class="chip {{ $ev->unggulan ? 'chip--orange' : 'chip--gray' }}">{{ $ev->unggulan ? '★ Ya' : 'Tidak' }}</span></td>
                     <td><span class="chip {{ $ev->status==='selesai' ? 'chip--green' : 'chip--orange' }}">{{ $ev->status==='selesai' ? 'Selesai' : 'Mendatang' }}</span></td>
                     <td class="td-actions">
-                        <a href="{{ route('admin.event.edit',$ev) }}" class="btn btn-secondary btn-sm">Edit</a>
-                        <form method="POST" action="{{ route('admin.event.destroy',$ev) }}" style="display:inline">
+                        <a href="{{ route('admin.event.edit',$ev->id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                        <form method="POST" action="{{ route('admin.event.destroy',$ev->id) }}" style="display:inline">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" data-confirm="Hapus event '{{ $ev->nama }}'?">Hapus</button>
                         </form>

@@ -11,7 +11,7 @@
 
 <div style="max-width:640px">
 <form method="POST"
-      action="{{ $mode==='create' ? route('admin.anggota.store') : route('admin.anggota.update',$anggota) }}">
+      action="{{ $mode==='create' ? route('admin.anggota.store') : route('admin.anggota.update',$anggota->id) }}">
 @csrf
 @if($mode==='edit') @method('PUT') @endif
 

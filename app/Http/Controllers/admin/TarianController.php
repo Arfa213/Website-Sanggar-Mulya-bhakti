@@ -16,7 +16,9 @@ class TarianController extends Controller
 
     public function create()
     {
-        return view('admin.tarian.form', ['tarian' => new Tarian, 'mode' => 'create']);
+        $tarian = new Tarian;
+        $mode   = 'create';
+        return view('admin.tarian.form', compact('tarian', 'mode'));
     }
 
     public function store(Request $request)
@@ -25,19 +27,22 @@ class TarianController extends Controller
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('tarian', 'public');
         }
-        $data['urutan'] = Tarian::max('urutan') + 1;
+        $data['urutan'] = (Tarian::max('urutan') ?? 0) + 1;
         Tarian::create($data);
         return redirect()->route('admin.tarian.index')->with('success', 'Tarian berhasil ditambahkan!');
     }
 
-    public function edit(Tarian $tarian)
+    public function edit($id)
     {
-        return view('admin.tarian.form', compact('tarian') + ['mode' => 'edit']);
+        $tarian = Tarian::findOrFail($id);
+        $mode   = 'edit';
+        return view('admin.tarian.form', compact('tarian', 'mode'));
     }
 
-    public function update(Request $request, Tarian $tarian)
+    public function update(Request $request, $id)
     {
-        $data = $this->validateTarian($request);
+        $tarian = Tarian::findOrFail($id);
+        $data   = $this->validateTarian($request);
         if ($request->hasFile('foto')) {
             if ($tarian->foto) Storage::disk('public')->delete($tarian->foto);
             $data['foto'] = $request->file('foto')->store('tarian', 'public');
@@ -46,8 +51,9 @@ class TarianController extends Controller
         return redirect()->route('admin.tarian.index')->with('success', 'Tarian berhasil diperbarui!');
     }
 
-    public function destroy(Tarian $tarian)
+    public function destroy($id)
     {
+        $tarian = Tarian::findOrFail($id);
         if ($tarian->foto) Storage::disk('public')->delete($tarian->foto);
         $tarian->delete();
         return redirect()->route('admin.tarian.index')->with('success', 'Tarian berhasil dihapus.');
@@ -64,8 +70,8 @@ class TarianController extends Controller
             'kostum'    => 'nullable|string|max:255',
             'durasi'    => 'nullable|string|max:100',
             'video_url' => 'nullable|url|max:500',
-            'unggulan'  => 'boolean',
-            'aktif'     => 'boolean',
+            'unggulan'  => 'nullable|boolean',
+            'aktif'     => 'nullable|boolean',
             'foto'      => 'nullable|image|max:3072',
         ]);
     }

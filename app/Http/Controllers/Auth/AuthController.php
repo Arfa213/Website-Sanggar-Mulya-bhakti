@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
@@ -69,36 +70,30 @@ class AuthController extends Controller
     //  PROCESS REGISTER
     // ─────────────────────────────────────────
     public function register(Request $request)
-    {
-        $request->validate([
-            'name'                  => ['required', 'string', 'max:255'],
-            'email'                 => ['required', 'email', 'unique:users,email'],
-            'alamat'                => ['required', 'string', 'max:500'],
-            'password'              => ['required', 'confirmed', Password::min(8)],
-        ], [
-            'name.required'      => 'Nama lengkap wajib diisi.',
-            'email.required'     => 'Email wajib diisi.',
-            'email.email'        => 'Format email tidak valid.',
-            'email.unique'       => 'Email sudah terdaftar.',
-            'alamat.required'    => 'Alamat wajib diisi.',
-            'password.required'  => 'Password wajib diisi.',
-            'password.confirmed' => 'Konfirmasi password tidak cocok.',
-            'password.min'       => 'Password minimal 8 karakter.',
-        ]);
+{
+    $request->validate([
+        'name'     => 'required|string|max:255',
+        'email'    => 'required|email|unique:users,email',
+        'alamat'   => 'nullable|string|max:500',
+        'password' => ['required', 'confirmed', Password::min(8)],
+    ], [
+        'email.unique'       => 'Email sudah terdaftar.',
+        'password.confirmed' => 'Konfirmasi password tidak cocok.',
+    ]);
 
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'alamat'   => $request->alamat,
-            'password' => Hash::make($request->password),
-            'role'     => 'anggota',
-        ]);
+    User::create([
+        'name'     => $request->name,
+        'email'    => $request->email,
+        'alamat'   => $request->alamat,
+        'password' => Hash::make($request->password),
+        'role'     => 'anggota',
+        'status'   => 'aktif',
+    ]);
 
-        Auth::login($user);
-
-        return redirect()->route('dashboard')
-            ->with('success', 'Selamat datang, ' . $user->name . '! Akun berhasil dibuat.');
-    }
+    // ✅ redirect + notifikasi
+    return redirect()->route('login')
+        ->with('success', 'Pendaftaran berhasil! Silakan login.');
+}
 
     // ─────────────────────────────────────────
     //  LOGOUT

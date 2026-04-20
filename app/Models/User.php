@@ -39,6 +39,7 @@ class User extends Authenticatable {
         'email_verified_at' => 'datetime',
         'password'          => 'hashed',
     ];
+    
 
     // ─── HELPERS ───────────────────────────────────
     public function isAdmin(): bool
@@ -50,6 +51,15 @@ class User extends Authenticatable {
     {
         return $this->status === 'aktif';
     }
+   public function pendaftaranTari()
+{
+    return $this->hasMany(\App\Models\PendaftaranTari::class);
+}
+
+public function kehadiran()
+{
+    return $this->hasMany(\App\Models\Kehadiran::class);
+}
 
     // ─── RELATIONS ─────────────────────────────────
     // Uncomment saat model terkait sudah dibuat

@@ -47,7 +47,7 @@
                     <td style="font-size:.8rem;max-width:160px;color:var(--muted)">{{ Str::limit($a->alamat ?? '-', 40) }}</td>
                     <td style="font-size:.8rem;white-space:nowrap">{{ $a->created_at->format('d M Y') }}</td>
                     <td>
-                        <form method="POST" action="{{ route('admin.anggota.toggle',$a) }}" style="display:inline">
+                        <form method="POST" action="{{ route('admin.anggota.toggle',$a->id) }}" style="display:inline">
                             @csrf @method('PATCH')
                             <button type="submit" class="chip {{ $a->status==='aktif' ? 'chip--green' : 'chip--gray' }}" style="border:none;cursor:pointer" title="Klik untuk toggle status">
                                 {{ $a->status==='aktif' ? '● Aktif' : '○ Non-aktif' }}
@@ -55,8 +55,8 @@
                         </form>
                     </td>
                     <td class="td-actions">
-                        <a href="{{ route('admin.anggota.edit',$a) }}" class="btn btn-secondary btn-sm">Edit</a>
-                        <form method="POST" action="{{ route('admin.anggota.destroy',$a) }}" style="display:inline">
+                        <a href="{{ route('admin.anggota.edit',$a->id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                        <form method="POST" action="{{ route('admin.anggota.destroy',$a->id) }}" style="display:inline">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" data-confirm="Hapus anggota {{ $a->name }}? Tindakan ini tidak dapat dibatalkan.">Hapus</button>
                         </form>

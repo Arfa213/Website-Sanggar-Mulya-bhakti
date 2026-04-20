@@ -10,4 +10,12 @@ class JadwalLatihan extends Model {
     public function getJamAttribute(): string {
         return $this->jam_mulai . ' – ' . $this->jam_selesai;
     }
+    public function pendaftaran()
+{
+    return $this->hasMany(\App\Models\PendaftaranTari::class, 'jadwal_id');
+}
+public function kehadiran()
+{
+    return $this->hasMany(\App\Models\Kehadiran::class, 'jadwal_id');
+}
 }

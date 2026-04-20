@@ -22,7 +22,9 @@ class AnggotaController extends Controller
 
     public function create()
     {
-        return view('admin.anggota.form', ['anggota' => new User, 'mode' => 'create']);
+        $anggota = new User;
+        $mode    = 'create';
+        return view('admin.anggota.form', compact('anggota', 'mode'));
     }
 
     public function store(Request $request)
@@ -47,14 +49,17 @@ class AnggotaController extends Controller
         return redirect()->route('admin.anggota.index')->with('success', 'Anggota berhasil ditambahkan!');
     }
 
-    public function edit(User $anggota)
+    public function edit($id)
     {
+        $anggota = User::findOrFail($id);
         abort_if($anggota->role === 'admin', 403);
-        return view('admin.anggota.form', compact('anggota') + ['mode' => 'edit']);
+        $mode = 'edit';
+        return view('admin.anggota.form', compact('anggota', 'mode'));
     }
 
-    public function update(Request $request, User $anggota)
+    public function update(Request $request, $id)
     {
+        $anggota = User::findOrFail($id);
         abort_if($anggota->role === 'admin', 403);
         $request->validate([
             'name'     => 'required|string|max:255',
@@ -70,16 +75,19 @@ class AnggotaController extends Controller
         return redirect()->route('admin.anggota.index')->with('success', 'Data anggota berhasil diperbarui!');
     }
 
-    public function destroy(User $anggota)
+    public function destroy($id)
     {
+        $anggota = User::findOrFail($id);
         abort_if($anggota->role === 'admin', 403);
         $anggota->delete();
         return redirect()->route('admin.anggota.index')->with('success', 'Anggota berhasil dihapus.');
     }
 
-    public function toggleStatus(User $anggota)
+    public function toggleStatus($id)
     {
+        $anggota = User::findOrFail($id);
+        abort_if($anggota->role === 'admin', 403);
         $anggota->update(['status' => $anggota->status === 'aktif' ? 'nonaktif' : 'aktif']);
-        return back()->with('success', 'Status anggota diperbarui.');
+        return back()->with('success', 'Status anggota berhasil diperbarui.');
     }
 }

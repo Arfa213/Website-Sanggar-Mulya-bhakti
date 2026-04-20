@@ -1,25 +1,35 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+@extends('layouts.app')
+@section('title', 'Lupa Password')
+@section('content')
+<section class="auth-page auth-page--center">
+    <div class="container auth-container auth-container--single">
+        <div class="auth-form-wrap auth-form-wrap--wide">
+            <span class="badge">Reset Password</span>
+            <h1 class="auth-title">Lupa Password?</h1>
+            <p class="auth-desc">Masukkan email Anda dan kami akan mengirimkan link reset password.</p>
+            <div class="auth-card">
+                @if(session('status'))
+                <div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;padding:12px 16px;color:#15803D;font-size:.875rem;margin-bottom:16px">
+                    {{ session('status') }}
+                </div>
+                @endif
+                @if($errors->any())
+                <div class="alert alert-error">
+                    @foreach($errors->all() as $e)<p>{{ $e }}</p>@endforeach
+                </div>
+                @endif
+
+                <p style="font-size:.875rem;color:var(--muted);margin-bottom:20px;line-height:1.6">
+                    Fitur kirim email reset password memerlukan konfigurasi SMTP di file <code>.env</code>.
+                    Untuk sementara, minta admin untuk reset password secara manual melalui panel admin.
+                </p>
+
+                <a href="{{ route('login') }}"
+                   style="display:block;text-align:center;background:var(--primary);color:#fff;font-weight:700;padding:12px;border-radius:50px;text-decoration:none;font-size:.9rem">
+                    ← Kembali ke Login
+                </a>
+            </div>
+        </div>
     </div>
-
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+</section>
+@endsection

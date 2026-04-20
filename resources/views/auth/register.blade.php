@@ -12,7 +12,16 @@
             <p class="auth-desc">Bergabunglah dengan komunitas pencinta seni traditional</p>
 
             <div class="auth-card">
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
+{{-- SESSION ERROR --}}
+@if(session('error'))
+    <div class="alert alert-error">{{ session('error') }}</div>
+@endif
                 @if($errors->any())
                     <div class="alert alert-error">
                         @foreach($errors->all() as $error)

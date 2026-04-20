@@ -11,7 +11,7 @@
 </div>
 
 <form method="POST"
-      action="{{ $mode==='create' ? route('admin.event.store') : route('admin.event.update',$event) }}"
+      action="{{ $mode==='create' ? route('admin.event.store') : route('admin.event.update',$event->id) }}"
       enctype="multipart/form-data">
 @csrf
 @if($mode==='edit') @method('PUT') @endif
