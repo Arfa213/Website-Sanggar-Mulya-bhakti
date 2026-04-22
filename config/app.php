@@ -122,5 +122,6 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
-
+// Tambahkan ini di paling bawah sebelum ];
+    'gemini_api_key' => env('GEMINI_API_KEY'),
 ];

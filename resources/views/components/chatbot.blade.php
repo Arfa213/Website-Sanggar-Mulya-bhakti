@@ -1,9 +1,3 @@
-{{--
-    Chatbot Widget — Sanggar Mulya Bhakti
-    Sudah di-include di layouts/app.blade.php sebelum </body>
-    Membutuhkan: GEMINI_API_KEY di .env + 'gemini' key di config/services.php
---}}
-
 <div id="chatbot-wrap">
 
     {{-- Tombol buka/tutup --}}
@@ -47,14 +41,11 @@
             style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#FAF8F6;scroll-behavior:smooth">
 
             {{-- Pesan selamat datang --}}
-            <div class="msg-bot">
-                Halo! Saya asisten virtual <strong>Sanggar Mulya Bhakti</strong> 🎭<br><br>
-                Saya siap membantu informasi tentang:<br>
-                • Jadwal latihan & kelas tari<br>
-                • Cara mendaftar anggota<br>
-                • Tarian yang diajarkan<br>
-                • Info kontak sanggar
-            </div>
+            {{-- Pesan selamat datang --}}
+<div class="msg-bot">
+    Halo! Saya asisten virtual <strong>Sanggar Mulya Bhakti</strong> 🎭<br><br>
+    Ada yang bisa saya bantu?
+</div>
 
             {{-- Quick replies --}}
             <div id="quick-replies" style="display:flex;flex-wrap:wrap;gap:6px">

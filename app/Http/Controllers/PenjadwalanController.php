@@ -1,8 +1,5 @@
 <?php
-// ══════════════════════════════════════════════════════════════
-// app/Http/Controllers/PenjadwalanController.php
-// Controller untuk anggota yang sudah login
-// ══════════════════════════════════════════════════════════════
+
 namespace App\Http\Controllers;
 
 use App\Models\{Tarian, JadwalLatihan, PendaftaranTari, Kehadiran};
@@ -11,30 +8,23 @@ use Illuminate\Support\Facades\Auth;
 
 class PenjadwalanController extends Controller
 {
-    public function __construct() { $this->middleware('auth'); }
+    // Tidak ada __construct middleware — sudah dihandle di routes/web.php
 
-    // ── Halaman utama: daftar tarian + jadwal saya ───────────
     public function index()
     {
         $user = Auth::user();
 
-        // Tarian yang sudah saya daftar
         $pendaftaran = PendaftaranTari::with(['tarian', 'jadwal'])
             ->where('user_id', $user->id)
             ->where('status', 'aktif')
             ->get();
 
-        // Semua tarian yang tersedia untuk didaftar
         $tarianTersedia = Tarian::where('aktif', true)
-            ->orderBy('urutan')
-            ->get();
+            ->orderBy('urutan')->get();
 
-        // Jadwal latihan untuk tiap tarian
         $jadwalLatihan = JadwalLatihan::where('aktif', true)
-            ->orderBy('urutan')
-            ->get();
+            ->orderBy('urutan')->get();
 
-        // Statistik kehadiran saya
         $statsKehadiran = Kehadiran::where('user_id', $user->id)
             ->selectRaw('status, COUNT(*) as total')
             ->groupBy('status')
@@ -46,7 +36,6 @@ class PenjadwalanController extends Controller
         ));
     }
 
-    // ── Daftar tarian ────────────────────────────────────────
     public function daftar(Request $request)
     {
         $request->validate([
@@ -57,7 +46,6 @@ class PenjadwalanController extends Controller
 
         $user = Auth::user();
 
-        // Cek apakah sudah terdaftar di tarian + jadwal ini
         $existing = PendaftaranTari::where([
             'user_id'   => $user->id,
             'tarian_id' => $request->tarian_id,
@@ -65,16 +53,16 @@ class PenjadwalanController extends Controller
         ])->first();
 
         if ($existing) {
-            return back()->with('error', 'Anda sudah terdaftar di kelas ini!');
+            return back()->with('error', 'Kamu sudah terdaftar di kelas ini!');
         }
 
         PendaftaranTari::create([
-            'user_id'       => $user->id,
-            'tarian_id'     => $request->tarian_id,
-            'jadwal_id'     => $request->jadwal_id,
-            'status'        => 'aktif',
-            'tanggal_daftar'=> now(),
-            'catatan'       => $request->catatan,
+            'user_id'        => $user->id,
+            'tarian_id'      => $request->tarian_id,
+            'jadwal_id'      => $request->jadwal_id,
+            'status'         => 'aktif',
+            'tanggal_daftar' => now()->toDateString(),
+            'catatan'        => $request->catatan,
         ]);
 
         $tarian = Tarian::find($request->tarian_id);
@@ -82,11 +70,10 @@ class PenjadwalanController extends Controller
 
         return back()->with('success',
             "Berhasil mendaftar Tari {$tarian->nama}! " .
-            "Jadwal latihan: {$jadwal->hari}, {$jadwal->jam_mulai}–{$jadwal->jam_selesai} di {$jadwal->tempat}."
+            "Jadwal: {$jadwal->hari}, {$jadwal->jam_mulai}–{$jadwal->jam_selesai} di {$jadwal->tempat}."
         );
     }
 
-    // ── Batalkan pendaftaran ──────────────────────────────────
     public function batalkan($id)
     {
         $pendaftaran = PendaftaranTari::where('id', $id)
@@ -94,10 +81,9 @@ class PenjadwalanController extends Controller
             ->firstOrFail();
 
         $pendaftaran->update(['status' => 'nonaktif']);
-        return back()->with('success', 'Pendaftaran dibatalkan.');
+        return back()->with('success', 'Pendaftaran berhasil dibatalkan.');
     }
 
-    // ── Riwayat kehadiran ─────────────────────────────────────
     public function riwayatKehadiran()
     {
         $kehadiran = Kehadiran::with(['jadwal', 'tarian'])

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.member')
 @section('title', 'Riwayat Kehadiran')
 @section('content')
 

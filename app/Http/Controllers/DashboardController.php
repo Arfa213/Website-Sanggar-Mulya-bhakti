@@ -1,13 +1,14 @@
 <?php
-// app/Http/Controllers/DashboardController.php
+
 namespace App\Http\Controllers;
 
 use App\Models\{PendaftaranTari, Kehadiran, Event, Tarian};
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function __construct() { $this->middleware('auth'); }
+    // Tidak ada __construct middleware — sudah dihandle di routes/web.php
 
     public function index()
     {
@@ -29,14 +30,16 @@ class DashboardController extends Controller
             ->toArray();
 
         $totalLatihan = array_sum($kehadiranBulanIni);
-        $hadir        = $kehadiranBulanIni['hadir'] ?? 0;
+        $hadir        = (int)($kehadiranBulanIni['hadir'] ?? 0);
+        $izin         = (int)($kehadiranBulanIni['izin']  ?? 0);
+        $alpa         = (int)($kehadiranBulanIni['alpa']  ?? 0);
         $persenHadir  = $totalLatihan > 0 ? round($hadir / $totalLatihan * 100) : 0;
 
         // Event mendatang
         $eventMendatang = Event::where('status', 'akan_datang')
             ->orderBy('tanggal')->limit(3)->get();
 
-        // Tarian populer (untuk rekomendasi)
+        // Rekomendasi tarian (yang belum didaftar)
         $tarianRekomendasi = Tarian::where('aktif', true)
             ->whereNotIn('id', $jadwalAktif->pluck('tarian_id'))
             ->orderBy('urutan')->limit(4)->get();
@@ -46,10 +49,15 @@ class DashboardController extends Controller
             ->where('user_id', $user->id)
             ->orderByDesc('tanggal')->limit(5)->get();
 
+        // Total kehadiran sepanjang waktu
+        $totalKehadiranAll = Kehadiran::where('user_id', $user->id)->count();
+        $totalHadirAll     = Kehadiran::where('user_id', $user->id)->where('status', 'hadir')->count();
+
         return view('pages.dashboard', compact(
             'user', 'jadwalAktif', 'kehadiranBulanIni',
-            'totalLatihan', 'hadir', 'persenHadir',
-            'eventMendatang', 'tarianRekomendasi', 'absensiTerakhir'
+            'totalLatihan', 'hadir', 'izin', 'alpa', 'persenHadir',
+            'eventMendatang', 'tarianRekomendasi', 'absensiTerakhir',
+            'totalKehadiranAll', 'totalHadirAll'
         ));
     }
 }

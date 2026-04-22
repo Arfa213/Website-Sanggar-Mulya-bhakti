@@ -8,8 +8,8 @@ use App\Http\Controllers\{
     DigitalArchiveController,
     DashboardController,
     PenjadwalanController,
-    ChatbotController,
 };
+use App\Http\Controllers\Api\GeminiController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\{
     DashboardController     as AdminDashboard,
@@ -49,8 +49,8 @@ Route::middleware('auth')->group(function () {
 });
 
 // ── CHATBOT (public — semua bisa akses) ───────────────────────
-Route::post('/chatbot',       [ChatbotController::class, 'chat'])->name('chatbot.chat');
-Route::post('/chatbot/clear', [ChatbotController::class, 'clearHistory'])->name('chatbot.clear');
+Route::post('/chatbot/chat', [GeminiController::class, 'chat'])->name('chatbot.chat');
+Route::post('/chatbot/clear', [GeminiController::class, 'clear'])->name('chatbot.clear');
 
 // ── ADMIN ─────────────────────────────────────────────────────
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\EventApiController;
 use App\Http\Controllers\Api\TarianApiController;
 use App\Http\Controllers\Api\GaleriApiController;
 use App\Http\Controllers\Api\AuthApiController;
+use App\Http\Controllers\Api\GeminiController;
 use App\Models\JadwalLatihan;
 use App\Models\PendaftaranTari;
 use App\Models\Kehadiran;
@@ -21,6 +22,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/tarian',      [TarianApiController::class,  'index']);
     Route::get('/tarian/{id}', [TarianApiController::class,  'show']);
     Route::get('/galeri',      [GaleriApiController::class,  'index']);
+    Route::post('/ai/chat', [GeminiController::class, 'chat']);
 
     Route::get('/jadwal', function () {
         $data = JadwalLatihan::where('aktif', true)->orderBy('urutan')->get();
@@ -80,6 +82,7 @@ Route::prefix('v1')->group(function () {
             $p->update(['status' => 'nonaktif']);
             return response()->json(['success' => true, 'message' => 'Pendaftaran berhasil dibatalkan.']);
         });
+
 
         Route::get('/kehadiran-saya', function (Illuminate\Http\Request $req) {
             $data = Kehadiran::with(['jadwal', 'tarian'])
