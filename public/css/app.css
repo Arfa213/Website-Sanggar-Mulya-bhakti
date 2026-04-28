@@ -282,11 +282,14 @@ img { display: block; max-width: 100%; }
     position: relative;
     border-radius: var(--radius);
     overflow: visible;
+    background: var(--primary-pale);
 }
 .hero-placeholder {
+    width: 100%;
     height: 360px;
+    object-fit: cover;
+    display: block;
     border-radius: var(--radius);
-    box-shadow: var(--shadow-md);
 }
 
 .hero-badge-float {
@@ -294,17 +297,17 @@ img { display: block; max-width: 100%; }
     bottom: -20px;
     left: -20px;
     background: var(--white);
+    color: var(--dark);
     border-radius: var(--radius);
-    padding: 16px 22px;
+    padding: 20px 28px;
     box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     gap: 2px;
-    border: 1px solid var(--border);
 }
 .float-number {
     font-family: var(--font-display);
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 900;
     color: var(--primary);
     line-height: 1;
@@ -594,7 +597,7 @@ img { display: block; max-width: 100%; }
     .hero-inner   { grid-template-columns: 1fr; gap: 40px; }
     .hero-image   { order: -1; }
     .hero-placeholder { height: 260px; }
-    .hero-badge-float { left: 8px; bottom: -16px; }
+    .hero-badge-float { right: 16px; bottom: -16px; }
 
     .stats-grid { grid-template-columns: 1fr; gap: 16px; }
 
@@ -612,3 +615,71 @@ img { display: block; max-width: 100%; }
     .archive-grid,
     .dokumentasi-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+    /* Small button style for "Lihat Lainnya" */
+    .btn-lihat-sm {
+        background: var(--primary) !important;
+        color: white !important;
+        font-weight: 500;
+        padding: 10px 20px;
+        border-radius: var(--radius-pill);
+        transition: all 0.3s;
+    }
+    .btn-lihat-sm:hover {
+        background: var(--primary-dark) !important;
+        transform: translateY(-2px);
+    }
+
+    /* Navigation buttons hover */
+    .archive-nav-btn:hover,
+    .dok-nav-btn:hover {
+        background: var(--primary-dark) !important;
+        transform: translateY(-50%) scale(1.08);
+    }
+
+    /* Dok card hover */
+    .dok-card {
+        transition: transform 0.3s ease;
+    }
+    .dok-card:hover img {
+        transform: scale(1.05);
+    }
+    .dok-card img {
+        transition: transform 0.3s ease;
+    }
+
+    /* Archive card hover */
+    .archive-card img {
+        transition: transform 0.3s ease;
+    }
+    .archive-card:hover img {
+        transform: scale(1.08);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .archive-slide,
+        .carousel-slide {
+            min-width: calc(33.333% - 12px) !important;
+            aspect-ratio: 3/4 !important;
+        }
+    }
+    @media (max-width: 768px) {
+        .archive-slide,
+        .carousel-slide {
+            min-width: calc(50% - 12px) !important;
+            aspect-ratio: 1/1 !important;
+        }
+    }
+    @media (max-width: 480px) {
+        .archive-slide,
+        .carousel-slide {
+            min-width: calc(100% - 12px) !important;
+            aspect-ratio: 1/1 !important;
+        }
+        .archive-nav-btn,
+        .dok-nav-btn {
+            width: 36px !important;
+            height: 36px !important;
+        }
+    }

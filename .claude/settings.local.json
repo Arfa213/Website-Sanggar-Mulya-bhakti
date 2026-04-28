@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan *)",
+      "Bash(php -r 'try { $pdo = new PDO\\('\\\\''mysql:host=127.0.0.1;port=3306'\\\\'', '\\\\''root'\\\\'', '\\\\'''\\\\''\\); echo '\\\\''MySQL connection OK'\\\\''; } catch \\(Exception $e\\) { echo '\\\\''Failed: '\\\\'' . $e->getMessage\\(\\); }')",
+      "Bash(php -i)",
+      "Bash(php -r ' *)",
+      "Bash(php -l resources/views/pages/home.blade.php)"
+    ]
+  }
+}

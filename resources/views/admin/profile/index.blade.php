@@ -103,6 +103,13 @@
                 @endif
                 <input type="file" name="foto_profil" class="form-control" accept="image/*">
             </div>
+            <div class="form-group">
+                <label>Foto Sejarah</label>
+                @if($profil->foto_sejarah)
+                    <img src="{{ asset('storage/'.$profil->foto_sejarah) }}" style="width:120px;height:80px;object-fit:cover;display:block;margin-bottom:8px;border-radius:8px">
+                @endif
+                <input type="file" name="foto_sejarah" class="form-control" accept="image/*">
+            </div>
         </div>
         <div style="margin-top:20px">
             <button type="submit" class="btn btn-primary">💾 Simpan Profil</button>

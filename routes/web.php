@@ -26,6 +26,7 @@ Route::get('/',               [HomeController::class,           'index'])->name(
 Route::get('/profile',        [ProfileController::class,        'index'])->name('profile');
 Route::get('/event',          [EventController::class,          'index'])->name('event');
 Route::get('/digital-archive',[DigitalArchiveController::class, 'index'])->name('digital-archive');
+Route::get('/galeri/{seksi?}', [App\Http\Controllers\GaleriController::class, 'frontendIndex'])->name('galeri.frontend.index');
 
 // ── AUTH ──────────────────────────────────────────────────────
 Route::get('/login',    [AuthController::class, 'showLogin'])->name('login')->middleware('guest');
@@ -86,7 +87,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/tarian/create',       [AdminTarian::class, 'create'])->name('tarian.create');
     Route::post('/tarian',             [AdminTarian::class, 'store'])->name('tarian.store');
     Route::get('/tarian/{id}/edit',    [AdminTarian::class, 'edit'])->name('tarian.edit');
-    Route::post('/tarian/{id}',        [AdminTarian::class, 'update'])->name('tarian.update');
+    Route::put('/tarian/{id}',        [AdminTarian::class, 'update'])->name('tarian.update');
     Route::post('/tarian/{id}/delete', [AdminTarian::class, 'destroy'])->name('tarian.destroy');
 
     // Anggota
@@ -100,8 +101,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Galeri
     Route::get('/galeri',              [AdminGaleri::class, 'index'])->name('galeri.index');
+    Route::get('/galeri/create',       [AdminGaleri::class, 'create'])->name('galeri.create');
     Route::post('/galeri',             [AdminGaleri::class, 'store'])->name('galeri.store');
-    Route::post('/galeri/{id}/delete', [AdminGaleri::class, 'destroy'])->name('galeri.destroy');
+    Route::get('/galeri/{id}/edit',    [AdminGaleri::class, 'edit'])->name('galeri.edit');
+    Route::put('/galeri/{id}',         [AdminGaleri::class, 'update'])->name('galeri.update');
+    Route::delete('/galeri/{id}',      [AdminGaleri::class, 'destroy'])->name('galeri.destroy');
 
     // Kehadiran
     Route::get('/kehadiran',           [AdminKehadiran::class, 'index'])->name('kehadiran.index');

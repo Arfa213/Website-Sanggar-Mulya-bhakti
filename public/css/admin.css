@@ -234,6 +234,26 @@ img { display: block; max-width: 100%; }
 .btn-sm { padding: 6px 12px; font-size: .8rem; }
 .btn-icon { padding: 8px; }
 
+/* ── DELETE BUTTON IN GALERI ── */
+.btn-delete {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(239, 68, 68, 0.9);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-delete:hover {
+    background: #DC2626;
+    transform: scale(1.05);
+}
+
 /* ── FORMS ── */
 .form-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
