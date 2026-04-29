@@ -46,14 +46,22 @@
             <div class="tari-card {{ $t->unggulan ? 'tari-card--featured' : '' }}"
                  data-cat="{{ $t->kategori }}"
                  data-nama="{{ strtolower($t->nama) }}">
-                <div class="tari-thumb">
+                <div class="tari-thumb" style="position:relative">
                     @if($t->foto)
                         <img src="{{ asset('storage/'.$t->foto) }}" alt="{{ $t->nama }}"
                              class="img-placeholder--tari"
                              style="width:100%;height:220px;object-fit:cover;border-radius:var(--radius) var(--radius) 0 0">
                     @else
-                        <div class="img-placeholder img-placeholder--tari">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C65D2E" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        <div class="img-placeholder img-placeholder--tari" style="width:100%;height:220px;border-radius:var(--radius) var(--radius) 0 0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1a1a,#2d2d2d)">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </div>
+                    @endif
+                    @if($t->video_url)
+                        <div class="video-play-overlay">
+                            <div class="video-play-btn">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            </div>
+                            <span style="font-size:0.75rem;font-weight:600;margin-top:6px;">Tonton Video</span>
                         </div>
                     @endif
                     @if($t->unggulan)
@@ -103,7 +111,7 @@
             'kostum'    => $t->kostum,
             'durasi'    => $t->durasi,
             'foto'      => $t->foto ? asset('storage/'.$t->foto) : null,
-            'video'     => $t->video_url,
+            'video'     => $t->youtube_embed_url,
         ];
     });
 @endphp
@@ -120,7 +128,9 @@ function openModal(idx) {
     const videoHtml = t.video
         ? `<div class="modal-video-wrap" style="margin-top:20px">
                <h4 class="modal-section-title">🎬 Video Tarian</h4>
-               <div class="video-embed"><iframe src="${t.video}" frameborder="0" allowfullscreen></iframe></div>
+               <div class="video-embed">
+                   <iframe src="${t.video}?rel=0&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+               </div>
            </div>`
         : `<p class="no-video" style="margin-top:20px">📹 Video belum tersedia untuk tarian ini.</p>`;
 

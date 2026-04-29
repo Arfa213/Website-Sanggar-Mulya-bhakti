@@ -82,14 +82,22 @@
                     <span>{{ $item->judul ?? 'Video' }}</span>
                 </div>
             @endif
+            <div class="galeri-delete-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </div>
             <div class="galeri-item-overlay">
-                <form method="POST" action="{{ route('admin.galeri.destroy',$item->id) }}" style="display:inline">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="btn-delete" title="Hapus media" onclick="return confirm('Yakin hapus media ini?')">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-                        Hapus
-                    </button>
-                </form>
+                <div class="overlay-content">
+                    @if($item->judul)
+                    <p class="overlay-title">{{ Str::limit($item->judul, 30) }}</p>
+                    @endif
+                    <form method="POST" action="{{ route('admin.galeri.destroy',$item->id) }}" style="display:inline">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn-delete" title="Hapus media ini" onclick="return confirm('Yakin hapus media ini?')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                            Hapus
+                        </button>
+                    </form>
+                </div>
                 <span class="chip chip--{{ $item->aktif ? 'green' : 'gray' }}" style="font-size:.65rem">{{ $item->aktif ? 'Tampil' : 'Sembunyi' }}</span>
             </div>
         </div>

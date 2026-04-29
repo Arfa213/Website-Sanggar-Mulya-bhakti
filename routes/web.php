@@ -16,9 +16,9 @@ use App\Http\Controllers\Admin\{
     ProfileController       as AdminProfile,
     EventController         as AdminEvent,
     TarianController        as AdminTarian,
-    AnggotaController       as AdminAnggota,
-    GaleriController        as AdminGaleri,
-    KehadiranController     as AdminKehadiran,
+    AnggotaController        as AdminAnggota,
+    GaleriController         as AdminGaleri,
+    KehadiranController      as AdminKehadiran,
 };
 
 // ── PUBLIC ────────────────────────────────────────────────────
